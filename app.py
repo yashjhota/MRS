@@ -1,6 +1,7 @@
 import streamlit as st
 import pickle
 import requests
+import gzip
 
 
 def fetch_poster(movie_id):
@@ -36,7 +37,9 @@ def recommend(movie):
 
 # Load the data
 movies_df = pickle.load(open('movie.pkl', 'rb'))  # Ensure this contains a DataFrame with a 'title' column
-similarity = pickle.load(open('similarlity.pkl', 'rb'))  # Ensure this is a similarity matrix
+with gzip.open('compressed.pkl.gz', 'rb') as ifp:
+    uncompressed_model = pickle.load(ifp)  # Ensure this is a similarity matrix
+similarity =uncompressed_model
 
 # Streamlit UI
 st.title("Movie Recommender System")
